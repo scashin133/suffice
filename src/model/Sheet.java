@@ -1,9 +1,13 @@
 package model;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.eteks.parser.*;
 
 public class Sheet
-implements ExpressionParameter{
+extends DefaultTableModel
+implements ExpressionParameter
+{
 
 	private String name;
 	private ExpressionParser parser;
