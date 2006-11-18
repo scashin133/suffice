@@ -1,21 +1,19 @@
 package controller;
 
 public class WorkbookDirector {
-	WorkbookBuilder workbookBuilder;
-	SheetBuilder sheetBuilder;
-	ExpressionParserBuilder expressionParserBuilder;
+	private Builder builder;
+	private Workbook wb;
 	
 	public WorkbookDirector ()
 	{
-		workbookBuilder = new WorkbookBuilder()
-		sheetBuilder = new SheetBuilder()
-		expressionParserBuilder = new ExpressionParserBuilder()
+		
 	}
 	
 	public void construct ()
 	{
-		workbookBuilder.buildPart();
-		sheetBuilder.buildPart();
-		expressionParserBuilder.buildPart();
+		// create WorkbookBuilder, SheetBuilder, and ExpressionParser
+		// to create a solid Workbook with a Sheet and ExpressionParser
+		
+		// also used to load specific Workbook and components
 	}
 }
