@@ -9,11 +9,12 @@ extends DefaultTableModel
 implements ExpressionParameter
 {
 
-	private String name;
-	private ExpressionParser parser;
+	public String name;
+	public ExpressionParser parser;
 	
 	Sheet(String name){
 		this.name = name;
+		parser = new ExpressionParser(this);
 	}
 	
 	public void rename(String name){
