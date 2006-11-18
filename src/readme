@@ -1,0 +1,3 @@
+As per the current design, all code should be placed
+in its respective package (model, view, or controller),
+so keep this empty.
