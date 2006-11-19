@@ -5,11 +5,10 @@ public class WorkbookBuilder extends Builder {
 
 	public void buildPart()
 	{
-		// construct Workbook
+		wb = new Workbook (); // tentative constructor
 	}
 	public Workbook getResult()
 	{
 		return wb;
 	}
-
 }

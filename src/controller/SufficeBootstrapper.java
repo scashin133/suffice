@@ -1,14 +1,13 @@
 package controller;
 
-public class SufficeBootstrapper {
+public static class SufficeBootstrapper {
 
 	public static void main(String[] args) {
 		WorkbookEditor we = new WorkbookEditor ();
-		SufficeController sc = new SufficeController ();
 		
-		sc.newWorkbook();
+		SufficeController.newWorkbook();
 		
-		// pass sc.newWorkbook() to we somehow
+		// pass a Workbook to the WorkbookEditor somehow
 	}
 
 }

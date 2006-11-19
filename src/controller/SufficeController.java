@@ -1,12 +1,12 @@
 package controller;
 
-public class SufficeController {
+public static class SufficeController {
 	
 	public SufficeController () {
 	}
 	
 	public static Workbook newWorkbook() {
-		//WorkbookDirector wd = new WorkbookDirector ();
+		return WorkbookDirector.construct();
 	}
 	
 	public static void save(Workbook w, OutputStream o) {
