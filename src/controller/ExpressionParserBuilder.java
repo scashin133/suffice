@@ -5,6 +5,9 @@ import com.eteks.jeks.JeksParameter;
 import com.eteks.parser.DoubleInterpreter;
 import javax.swing.table.TableModel;
 
+//We are now not using Jeks, so this has to be modified to reflect that change.
+//We may not be able to do this until the Model's expression parser is complete.
+
 public class ExpressionParserBuilder extends Builder {
 	private ExpressionParser ep;
 	
