@@ -41,8 +41,8 @@
 			<integer>181</integer>
 			<key>Points</key>
 			<array>
-				<string>{348.49, 539.165}</string>
-				<string>{376.081, 558.392}</string>
+				<string>{348.491, 539.165}</string>
+				<string>{376.081, 558.391}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -74,9 +74,9 @@
 			<integer>178</integer>
 			<key>Points</key>
 			<array>
-				<string>{313.464, 258.66}</string>
+				<string>{313.465, 258.66}</string>
 				<string>{342.399, 368.61}</string>
-				<string>{313.434, 479.098}</string>
+				<string>{313.434, 479.097}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -142,7 +142,7 @@
 			<key>Points</key>
 			<array>
 				<string>{305.535, 198.379}</string>
-				<string>{305.535, 175.789}</string>
+				<string>{305.535, 175.788}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -654,7 +654,7 @@
 			<key>Points</key>
 			<array>
 				<string>{297.463, 539.362}</string>
-				<string>{271.818, 635.092}</string>
+				<string>{271.818, 635.093}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -717,7 +717,7 @@
 			<integer>155</integer>
 			<key>Points</key>
 			<array>
-				<string>{411.108, 599.353}</string>
+				<string>{411.108, 599.352}</string>
 				<string>{428.854, 651.091}</string>
 			</array>
 			<key>Style</key>
@@ -810,7 +810,7 @@
 			<integer>152</integer>
 			<key>Points</key>
 			<array>
-				<string>{235.439, 523.882}</string>
+				<string>{235.44, 523.882}</string>
 				<string>{182.441, 534.96}</string>
 			</array>
 			<key>Style</key>
@@ -1091,7 +1091,7 @@
 			<integer>171</integer>
 			<key>Points</key>
 			<array>
-				<string>{268.679, 127.06}</string>
+				<string>{268.679, 127.059}</string>
 				<string>{236.984, 108.809}</string>
 			</array>
 			<key>Style</key>
@@ -1124,7 +1124,7 @@
 			<integer>173</integer>
 			<key>Points</key>
 			<array>
-				<string>{342.377, 127.055}</string>
+				<string>{342.377, 127.054}</string>
 				<string>{376.174, 107.583}</string>
 			</array>
 			<key>Style</key>
@@ -1245,9 +1245,9 @@
 		</dict>
 	</array>
 	<key>ModificationDate</key>
-	<string>2006-11-15 02:24:37 -0800</string>
+	<string>2006-11-20 19:15:26 -0800</string>
 	<key>Modifier</key>
-	<string>mitch</string>
+	<string>Chris Baker</string>
 	<key>NotesVisible</key>
 	<string>NO</string>
 	<key>Orientation</key>
@@ -1317,13 +1317,13 @@
 		<key>FitInWindow</key>
 		<false/>
 		<key>Frame</key>
-		<string>{{531, -11}, {591, 842}}</string>
+		<string>{{351, 4}, {591, 774}}</string>
 		<key>ShowRuler</key>
 		<false/>
 		<key>ShowStatusBar</key>
 		<true/>
 		<key>VisibleRegion</key>
-		<string>{{-60, -73}, {696.897, 880.8}}</string>
+		<string>{{-51, -27}, {696.897, 798.528}}</string>
 		<key>Zoom</key>
 		<string>0.8265213</string>
 	</dict>
