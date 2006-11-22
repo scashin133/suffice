@@ -7,5 +7,6 @@
 			<attribute name="javadoc_location" value="http://www.eteks.com/jeks/en/doc/index.html"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/mesp/Mesp.jar" sourcepath="lib/mesp/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

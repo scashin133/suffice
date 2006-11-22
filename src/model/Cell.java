@@ -45,9 +45,10 @@ public class Cell {
 	 * @param rawExpression
 	 */
 	public void setRawExpression(String rawExpression) {
+		String pattern = "\\A=?[\\w|\\W]*";
 		if (rawExpression.length() == 0) {
 			calculatedValue = rawExpression;
-		} else if (rawExpression.charAt(0) == '=') {
+		} else if (Pattern.matches(pattern, rawExpression)) {
 
 		} else {
 			calculatedValue = rawExpression;
@@ -63,7 +64,7 @@ public class Cell {
 	 *         setRawExpression method. Could be String, Int, Double, etc.
 	 */
 	public Object getCalculatedValue() {
-		// TODO Auto-generated method stub
+
 		return calculatedValue;
 	}
 

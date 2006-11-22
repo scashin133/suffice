@@ -1,13 +1,7 @@
 package model;
 
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-
-import com.eteks.parser.*;
 
 public class Sheet extends AbstractTableModel {
 

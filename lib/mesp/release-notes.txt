@@ -1,0 +1,28 @@
+Math Expression String Parser (MESP)
+
+Version: 1.02
+Date: October 25, 2004
+	-Fixed bug: Negate followed by open bracket was improperly scoped. (bugid=1)
+	 Before, -(1+3) would be incorrectly parsed as (-1+3).  The parser is now updated to
+	 throw an exception if an open bracket is found and negate is true.  The example
+	 can be rewritten as -1*(1+3).
+	-Improved the wording for the description of the acceptNumParam method of various functions.
+	-Changed description of the parsing of values in ExpressionTree to accurately reflect the
+	 parsing of values in computerized scientific notation.
+	-Changed parsing of values code to allow a plus sign after an 'e' or 'E' when parsing a
+	 value.  E.g. 1.23E+4 is now valid but before an exception would be thrown.  This is
+	 consistent with Double.parseDouble(...).
+	-Added testing folder, containing Test.java and testcases.txt.
+	-Updated readme.txt file to contain a better example.
+	-Made ExpressionTree empty constructor private.
+	-Upgraded development status from alpha to beta.
+
+Version: 1.01
+Date: October 20, 2004
+	-Changed MinFunction to return Double.MIN_VALUE instead of -Double.MAX_VALUE
+	 for 0 parameters.
+
+Version: 1.0
+Date: October 20, 2004
+	-Initial release (under the BSD License).
+
