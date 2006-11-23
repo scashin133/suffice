@@ -9,9 +9,9 @@ public class Sheet extends AbstractTableModel {
 	 * We can change how these are intialized. Probably should be a value that
 	 * is passed to the table model when constructed.
 	 */
-	private final static int ROW_COUNT = 20;
+	private final static int ROW_COUNT = 5;
 
-	private final static int COLUMN_COUNT = 20;
+	private final static int COLUMN_COUNT = 5;
 
 	public String name;
 
@@ -31,7 +31,10 @@ public class Sheet extends AbstractTableModel {
 	public Sheet(String name) {
 		this.name = name;
 		cells = new TreeMap<String, Cell>();
-
+	}
+	
+	public TreeMap<String, Cell> getCells(){
+		return cells;
 	}
 
 	/**
@@ -114,6 +117,7 @@ public class Sheet extends AbstractTableModel {
 		Cell tempCell = cells.get(cellLocation);
 		System.out.println(tempCell);
 		if (tempCell == null) {
+			//System.out.println("putting cell at " + cellLocation);
 			cells.put(cellLocation, new Cell(this, rowIndex, columnIndex, ""));
 			return cells.get(cellLocation);
 		} else {

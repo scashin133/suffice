@@ -87,6 +87,7 @@ public class SufficeCellEditor extends DefaultCellEditor {
 		String valueEnteredIntoCell = (String) super.getCellEditorValue();
 		Sheet sheet = (Sheet) table.getModel();
 		Cell tempCell = null;
+		
 		if (table.getEditingRow() != -1 && table.getEditingColumn() != -1) {
 			tempCell = sheet.getCellAt(table.getEditingRow(), table
 					.getEditingColumn());

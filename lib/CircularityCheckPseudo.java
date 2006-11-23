@@ -1,14 +1,18 @@
 
-VarMap varmap = map of cell names to their values for the parser.
+Cell[] cellsReferingToThisCell
+Cell[] cellsReferencedInExpression
 
-Object getValue(Stack prevVisitedCells) throws CircularityException{
+// recompiles given cell and returns its compiled & evaluated value
+String getValue(Stack prevVisitedCells) throws CircularityException{
 	if currCell is in prevVisitedCells {
 		throw CircularityException
-	}	else{
-		Object[] getCellsBeingRefferedTo
+	}	
+	else{
 
-		for(Cell c : cellsRefferingTo){
-			push currCell
+		VarMap varmap
+		
+		for(Cell c : cellsReferencedInExpression){
+			push c
 			value = c.getValue(Stack)
 			varmap.associate(c, value)
 			pop
@@ -17,6 +21,7 @@ Object getValue(Stack prevVisitedCells) throws CircularityException{
 
 		value = eval(varmap, null)
 		return value
+		
 	}
 
 }
