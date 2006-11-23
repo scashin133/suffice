@@ -10,19 +10,23 @@ import com.graphbuilder.math.FuncMap;
 import com.graphbuilder.math.VarMap;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.TreeMap;
 
 public class Cell {
 
+	public static final boolean DEBUG = false;
+	
 	private int row;
 	private int column;
 	private String rawExpression;
 	private Object calculatedValue;
 	private Sheet sheet;
-	private HashMap<String,Cell> cellsReferingToMe;
+	private ArrayList<Cell> cellsListeningToMe;
 	private HashMap<String,Cell> cellsIReferTo;
+	private ArrayList<Cell> cellsIHaveRegisteredListenersWith;
 	private Expression cellExpression;
 
 	public Cell(Sheet sheet, int row, int col, Object value) {
@@ -31,17 +35,36 @@ public class Cell {
 		this.column = col;
 		this.calculatedValue = value;
 		this.cellsIReferTo = new HashMap<String,Cell>();
+		this.cellsListeningToMe = new ArrayList<Cell>();
+		this.cellsIHaveRegisteredListenersWith = new ArrayList<Cell>();
 	}
 
 	/**
 	 * Raw meaning before being processed by our parser.
 	 * 
-	 * @return The expression that is being held by this cell. The expression
-	 *         raw expression is not only the expression that our parser deals
-	 *         with. It could also be any value that it is given.
+	 * @return The actual text the user has put into this cell, uncompiled.
 	 */
 	public String getRawExpression() {
 		return rawExpression;
+	}
+	
+	/**
+	 * Add a cell to the list of cells that are listening
+	 * to this cell for changes.
+	 * 
+	 * @param newListeningCell Cell who's expression references this cell
+	 */
+	public void addListener(Cell newListeningCell){
+		cellsListeningToMe.add(newListeningCell);
+	}
+	
+	/**
+	 * Remove a cell from the listener list.
+	 * 
+	 * @param listenerCell
+	 */
+	public void removeListener(Cell listenerCell){
+		cellsListeningToMe.remove(listenerCell);
 	}
 
 	/**
@@ -55,56 +78,109 @@ public class Cell {
 	public void setRawExpression(String rawExpression) {
 
 		this.rawExpression = rawExpression;
+		
+		// I (might) have a new list of cells I am listening to.
+		// let the old list know I am no longer listening to them
+		for(Cell c : this.cellsIHaveRegisteredListenersWith){
+			c.removeListener(this);
+		}
 
+		// nothing entered into cell, 
+		// set calculated value to raw expression and return
 		if(rawExpression.length() == 0){
 			calculatedValue = rawExpression;
 			return;
 		}
 
+		// does this raw expression start with "="?
 		boolean startsWithEquals = rawExpression.substring(0,1).equals("=");
 
+		// if yes, this is an expression that needs to be recursively compiled
 		if (startsWithEquals) {
 			String rawExpressionWithoutEquals = rawExpression.substring(1, rawExpression.length());
+			// compile this expression (after removing the leading "=")
 			calculatedValue = compileRawExpression(rawExpressionWithoutEquals);
 
 		} else {
+			
+			// the data entered into this cell isn't an expression
 			calculatedValue = rawExpression;
 
 
 		}
+		
+		// recompile every cell listening to me
+		for(Cell c : this.cellsListeningToMe){
+			System.out.println("recompiling " + c);
+			try{
+				c.recompile();
+			} catch(ConcurrentModificationException e){
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		}
 
 	}
+	
+	/**
+	 * Recompile this cell.
+	 * 
+	 */
+	public void recompile(){
+		System.out.println("\tThis cell's raw expression: " + this.rawExpression);
+		System.out.println("\tCompiled expression before recomiple: " + this.calculatedValue);
+		setRawExpression(this.rawExpression);
+		System.out.println("\tCompiled expression after recompile: " + this.calculatedValue);
+	}
 
-	// return the value to be displayed after compilation
+	/**
+	 * Returns the compiled form of rawExpression
+	 * 
+	 * @param rawExpression The expression the be compiled, without the leading "="
+	 */
 	private Object compileRawExpression(String rawExpression){
 
-		System.out.println("compiling raw expression...");
-
-		// Handle Incomplete Expression exception ExpressionParseException
+		if(DEBUG){ System.out.println("compiling raw expression..."); }
+		
+		
+		// turn rawExpression into an Expression object
 		try{
 			cellExpression = ExpressionTree.parse(rawExpression);
 		} catch (ExpressionParseException e){
+			// this expression was syntacticaly invalid
 			return "ERR";
 		}
+		
 		String[] cellsReferencedInExpression = cellExpression.getVariableNames();
 
-		System.out.println("\t" + cellsReferencedInExpression.length + " variable(s) found");
+		if(DEBUG){ System.out.println("\t" + cellsReferencedInExpression.length + " variable(s) referenced"); }
 
+		// lookup each cell referenced in the expression, storing
+		// them in cellsIReferTo
 		for(String cellName : cellsReferencedInExpression){
-			System.out.println("\tLooking up '" + cellName + "':" );
+			if(DEBUG) { System.out.println("\tLooking up value of'" + cellName + "':" ); }
 			Cell thisReferencedCell = sheet.getCells().get(cellName);
 
 			// failed to lookup cell by name
 			// the user probably entered an expression with a bad cell name
 			if(thisReferencedCell == null){
+				if(DEBUG){ System.out.println("\tERROR: bad cell name"); }
 				return "ERR";
 			}
+			
 			// successfuly found cell by name
 			// add this cell to cellsIReferTo
+			// and register a listener with that cell
 			else{
-				System.out.println("\t\tAbout to add cell to 'cells i refer to': " + thisReferencedCell);
-				System.out.println("\t\t" + thisReferencedCell.toString());
+				if(DEBUG) { System.out.println("\t\tAbout to add cell to 'cells i refer to': " + thisReferencedCell); }
 				cellsIReferTo.put(cellName, thisReferencedCell);
+				cellsIHaveRegisteredListenersWith.add(thisReferencedCell);
+				thisReferencedCell.addListener(this);
 			}
 		}
 
@@ -114,10 +190,12 @@ public class Cell {
 			Stack<Cell> previouslyVisitedCells = new Stack<Cell>();
 			try{
 				calculatedValue = getValueRecursively(previouslyVisitedCells);
+				
 			} catch (NumberFormatException e){
 				return "ERR: non-number references";
 			}
 		} catch (CircularityException e) {
+			
 			return "ERR: Circularity!";
 		}
 		

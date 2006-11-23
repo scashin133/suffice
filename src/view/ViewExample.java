@@ -56,8 +56,6 @@ public class ViewExample {
 
 		testFrame.setVisible(true);
 
-		System.out.println(testTable.getCellEditor());
-
 	}
 
 }
