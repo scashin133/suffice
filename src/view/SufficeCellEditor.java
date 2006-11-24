@@ -50,6 +50,7 @@ public class SufficeCellEditor extends DefaultCellEditor {
 
 	/**
 	 * Creates our cell editor.
+	 * 
 	 * @param paramTextField
 	 */
 	public SufficeCellEditor(JTextField paramTextField) {
@@ -78,16 +79,16 @@ public class SufficeCellEditor extends DefaultCellEditor {
 	}
 
 	/**
-	 * Computes the value entered into the cell and then sets that as the 
-	 * raw expression for this cell.  Then changes the displayed value to
-	 * the calculated value.
+	 * Computes the value entered into the cell and then sets that as the raw
+	 * expression for this cell. Then changes the displayed value to the
+	 * calculated value.
 	 */
 	public boolean stopCellEditing() {
 
 		String valueEnteredIntoCell = (String) super.getCellEditorValue();
 		Sheet sheet = (Sheet) table.getModel();
 		Cell tempCell = null;
-		
+
 		if (table.getEditingRow() != -1 && table.getEditingColumn() != -1) {
 			tempCell = sheet.getCellAt(table.getEditingRow(), table
 					.getEditingColumn());
@@ -101,6 +102,7 @@ public class SufficeCellEditor extends DefaultCellEditor {
 		if (cellValue == null) {
 			return false;
 		} else {
+			table.repaint();
 			return super.stopCellEditing();
 		}
 
