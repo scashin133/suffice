@@ -32,6 +32,14 @@ public class WorkbookEditor extends JFrame {
 		
 	public WorkbookEditor() {
 		
+		try {
+	        UIManager.setLookAndFeel(
+	            UIManager.getSystemLookAndFeelClassName());
+	    } 
+	    catch (Exception e) {
+	       // handle exception
+	    }
+	    
 		menubar = new JMenuBar();
 		formMenu(); 
 		this.setJMenuBar(menubar);
@@ -75,6 +83,21 @@ public class WorkbookEditor extends JFrame {
 		menu.getAccessibleContext().setAccessibleDescription("Perform actions on this workbook");
 		menubar.add(menu);
 		
+		newsheet = new JMenuItem("Add new spreadsheet");
+		newsheet.addActionListener(new AddNewSheetListener());
+		removesheet = new JMenuItem("Remove current spreadsheet");
+		removesheet.addActionListener(new RemoveSheetListener());
+		renamesheet = new JMenuItem("Rename current spreadsheet");
+		renamesheet.addActionListener(new RenameSheetListener());
+		menu.add(newsheet);
+		menu.addSeparator();
+		menu.add(renamesheet);
+		menu.add(removesheet);
+		
+		menu = new JMenu("Spreadsheet");
+		menu.getAccessibleContext().setAccessibleDescription("Actions specific to this spreadsheet");
+		menubar.add(menu);
+		
 		newrow = new JMenuItem("Add new row");
 		newrow.addActionListener(new AddNewRowListener());
 		newcolumn = new JMenuItem("Add new column");
@@ -83,22 +106,11 @@ public class WorkbookEditor extends JFrame {
 		removerow.addActionListener(new RemoveRowListener());
 		removecolumn = new JMenuItem("Remove current column");
 		removecolumn.addActionListener(new RemoveColumnListener());
-		newsheet = new JMenuItem("Add new spreadsheet");
-		newsheet.addActionListener(new AddNewSheetListener());
-		removesheet = new JMenuItem("Remove current spreadsheet");
-		removesheet.addActionListener(new RemoveSheetListener());
-		renamesheet = new JMenuItem("Rename current spreadsheet");
-		renamesheet.addActionListener(new RenameSheetListener());
 		menu.add(newrow);
 		menu.add(newcolumn);
 		menu.addSeparator();
 		menu.add(removerow);
 		menu.add(removecolumn);
-		menu.addSeparator();
-		menu.add(newsheet);
-		menu.addSeparator();
-		menu.add(renamesheet);
-		menu.add(removesheet);
 	}
 	
 	private JPanel makeSheetPanel(String title) {
