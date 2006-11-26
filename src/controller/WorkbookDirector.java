@@ -1,5 +1,7 @@
 package controller;
 
+import model.WorkBook;
+
 /* I'm not sure if this is how they envisioned this
  * builder/director pattern working. Overall, it seems
  * the builder pattern isn't designed to be applied
@@ -11,21 +13,27 @@ package controller;
  * loading/saving.
  */
 
-public static class WorkbookDirector {
+public class WorkbookDirector {
 	
 	//public WorkbookDirector ()
 	//{
 	//}
 	
-	public Workbook construct ()
+	public static WorkBook construct ()
 	{
 		WorkbookBuilder wbb = new WorkbookBuilder ();
 		SheetBuilder sb = new SheetBuilder ();
-		ExpressionParserBuilder epb = new ExpressionParserBuilder ();
+		//ExpressionParserBuilder epb = new ExpressionParserBuilder ();
+		WorkBook wb;
 		
-		wb = wbb.construct();
-		wb.addSheet (sb.construct());
-		wb.setParser (epb.construct());
+		wbb.buildPart();
+		wb = wbb.getResult();
+		
+		sb.buildPart();
+		wb.addSheet (sb.getResult());
+		
+		//epb.buildPart();
+		//wb.setParser (epb.getResult());
 		
 		return wb;
 	}

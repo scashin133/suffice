@@ -1,15 +1,11 @@
-package controller;
+// From looking at the model, building an expressionParser
+// for workbook doesn't seem necessary, so this class
+// will most likely be obsolete.
 
-import com.eteks.parser.ExpressionParser;
-import com.eteks.jeks.JeksParameter;
-import com.eteks.parser.DoubleInterpreter;
-import javax.swing.table.TableModel;
-
-//We are now not using Jeks, so this has to be modified to reflect that change.
-//We may not be able to do this until the Model's expression parser is complete.
+/* package controller;
 
 public class ExpressionParserBuilder extends Builder {
-	private ExpressionParser ep;
+   private ExpressionParser ep;
 	
 	public ExpressionParser ()
 	{
@@ -17,22 +13,11 @@ public class ExpressionParserBuilder extends Builder {
 
 	public void buildPart()
 	{
-		JeksExpressionSyntax s = new JeksExpressionSyntax (); // using default locale
-		
-		Interpreter i = new Interpreter (new DoubleInterpreter()); // I'm pretty sure we'll be using 
-																   // DoubleInterpreter, as opposed to
-																   // MathMLInterpreter
-		
-		// arbitrary numbers for table dimensions
-		int numOfRows = 100;
-		int numOfColumns = 20;
-		DefaultTableModel dtm = DefaultTableModel(numOfRows, numOfColumns);
-		
-		JeksParameter jp = new JeksParameter (s, i, dtm);
-		ep = new ExpressionParser (jp);
+		// pass a constructed ExpressionParser
 	}
 	public ExpressionParser getResult()
 	{
 		return ep;
 	}
 }
+*/

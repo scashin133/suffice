@@ -1,8 +1,9 @@
 package controller;
 
 import java.io.*;
+import model.WorkBook;
 
-public static class SufficeController {
+public class SufficeController {
 	
 	// private WorkbookSerializer ws;
 	//
@@ -17,15 +18,12 @@ public static class SufficeController {
 	// but should probably implement 
 	// WorkbookSerializer eventually.
 	
-	public SufficeController () {
-	}
-	
-	public static Workbook newWorkbook() {
+	public static WorkBook newWorkbook() {
 		return WorkbookDirector.construct();
 	}
 	
 	//Storing it as a workbook.
-	public static void save(Workbook w, OutputStream o) {
+	public static void save(WorkBook w, OutputStream o) {
         try {
 
         	ObjectOutputStream oos = new ObjectOutputStream (o);
@@ -43,7 +41,9 @@ public static class SufficeController {
 	public static void load(InputStream input) {
 		try {
 			ObjectInputStream ois = new ObjectInputStream (input);
-			Workbook w = (Workbook) ois.readObject();
+			WorkBook w = (WorkBook) ois.readObject();
+			// will readObject() create a new JTable, cause Suffice
+			// to start up as normal, etc?
 		}
 		catch (Exception e) {}
 	}
