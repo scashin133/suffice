@@ -23,6 +23,10 @@ public class WorkbookEditor extends JFrame {
 	private JMenuItem newsheet;
 	private JMenuItem removesheet;
 	private JMenuItem renamesheet;
+	private JMenuItem newrow;
+	private JMenuItem newcolumn;
+	private JMenuItem removerow;
+	private JMenuItem removecolumn;
 	private JTabbedPane tabpane;
 	private File currentFile;
 		
@@ -71,15 +75,30 @@ public class WorkbookEditor extends JFrame {
 		menu.getAccessibleContext().setAccessibleDescription("Perform actions on this workbook");
 		menubar.add(menu);
 		
+		newrow = new JMenuItem("Add new row");
+		newrow.addActionListener(new AddNewRowListener());
+		newcolumn = new JMenuItem("Add new column");
+		newcolumn.addActionListener(new AddNewColumnListener());
+		removerow = new JMenuItem("Remove current row");
+		removerow.addActionListener(new RemoveRowListener());
+		removecolumn = new JMenuItem("Remove current column");
+		removecolumn.addActionListener(new RemoveColumnListener());
 		newsheet = new JMenuItem("Add new spreadsheet");
 		newsheet.addActionListener(new AddNewSheetListener());
 		removesheet = new JMenuItem("Remove current spreadsheet");
 		removesheet.addActionListener(new RemoveSheetListener());
-		renamesheet = new JMenuItem("Rename sheet");
+		renamesheet = new JMenuItem("Rename current spreadsheet");
 		renamesheet.addActionListener(new RenameSheetListener());
+		menu.add(newrow);
+		menu.add(newcolumn);
+		menu.addSeparator();
+		menu.add(removerow);
+		menu.add(removecolumn);
+		menu.addSeparator();
 		menu.add(newsheet);
-		menu.add(removesheet);
+		menu.addSeparator();
 		menu.add(renamesheet);
+		menu.add(removesheet);
 	}
 	
 	private JPanel makeSheetPanel(String title) {
@@ -138,6 +157,22 @@ public class WorkbookEditor extends JFrame {
 		this.dispose();
 	}
 	
+	private void removeRow() {
+		
+	}
+	
+	private void removeColumn() {
+		
+	}
+	
+	private void addNewRow() {
+		
+	}
+	
+	private void addNewColumn() {
+		
+	}
+	
 	private class AddNewSheetListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			addNewSheet();
@@ -177,6 +212,30 @@ public class WorkbookEditor extends JFrame {
 	private class ExitListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			exit();
+		}
+	}
+	
+	private class AddNewRowListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			addNewRow();
+		}
+	}
+	
+	private class AddNewColumnListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			addNewColumn();
+		}
+	}
+	
+	private class RemoveRowListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			removeRow();
+		}
+	}
+	
+	private class RemoveColumnListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			removeColumn();
 		}
 	}
 }
