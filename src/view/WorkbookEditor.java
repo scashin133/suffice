@@ -4,12 +4,12 @@ package view;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Enumeration;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-
 import model.Sheet;
 
 public class WorkbookEditor extends JFrame {
@@ -24,6 +24,7 @@ public class WorkbookEditor extends JFrame {
 	private JMenuItem removesheet;
 	private JMenuItem renamesheet;
 	private JTabbedPane tabpane;
+	private File currentFile;
 		
 	public WorkbookEditor() {
 		
@@ -52,9 +53,13 @@ public class WorkbookEditor extends JFrame {
 		menubar.add(menu);
 		
 		openfile = new JMenuItem("Open File...");
+		openfile.addActionListener(new OpenFileListener());
 		saveas = new JMenuItem("Save As...");
+		saveas.addActionListener(new SaveFileAsListener());
 		save = new JMenuItem("Save");
+		save.addActionListener(new SaveFileListener());
 		exit = new JMenuItem("Exit");
+		exit.addActionListener(new ExitListener());
 		menu.add(openfile);
 		menu.addSeparator();
 		menu.add(save);
@@ -117,6 +122,22 @@ public class WorkbookEditor extends JFrame {
 		}
 	}
 	
+	private void openFile() {
+		
+	}
+	
+	private void saveFile() {
+		
+	}
+	
+	private void saveFileAs(String filename) {
+		
+	}
+	
+	private void exit() {
+		this.dispose();
+	}
+	
 	private class AddNewSheetListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			addNewSheet();
@@ -135,4 +156,27 @@ public class WorkbookEditor extends JFrame {
 		}
 	}
 
+	private class OpenFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			openFile();
+		}
+	}
+	
+	private class SaveFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			
+		}
+	}
+	
+	private class SaveFileAsListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			
+		}
+	}
+	
+	private class ExitListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			exit();
+		}
+	}
 }
