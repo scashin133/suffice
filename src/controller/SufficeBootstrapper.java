@@ -12,10 +12,6 @@ public class SufficeBootstrapper {
 		WorkbookEditor we = new WorkbookEditor ();
 		// Are we still using WorkbookEditor, or is it under
 		// a different name (SufficeTable)?
-		
-		SufficeController.newWorkbook();
-		
-		// pass a Workbook to the WorkbookEditor somehow
 	}
 
 }
