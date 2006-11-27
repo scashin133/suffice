@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.*;
+
 import model.WorkBook;
 
 public class SufficeController {
@@ -24,14 +25,34 @@ public class SufficeController {
 	
 	//Storing it as a workbook.
 	public static void save(WorkBook w, OutputStream o) {
-        try {
+        
 
-        	ObjectOutputStream oos = new ObjectOutputStream (o);
-    		oos.writeObject(w);
-    		oos.close();
-    		o.close();
-        }
-        catch (Exception e) {}
+        	ObjectOutputStream oos = null;
+			try {
+				oos = new ObjectOutputStream (o);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		try {
+				oos.writeObject(w);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		try {
+				oos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		try {
+				o.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+       
 
 		// assuming the view will be responsible for selecting
 		// file (probably through JFileChooser, creating
@@ -42,15 +63,39 @@ public class SufficeController {
 	//Retrieving the saved info, then casting it as a workbook. 
 	public static WorkBook load(InputStream input) {
 		WorkBook w = null;
-		try {
-			ObjectInputStream ois = new ObjectInputStream (input);
-			w = (WorkBook) ois.readObject();
-			ois.close();
+		
+			ObjectInputStream ois = null;
+			try {
+				ois = new ObjectInputStream (input);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				w = (WorkBook) ois.readObject();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				ois.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
 			input.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			// will readObject() create a new JTable, cause Suffice
 			// to start up as normal, etc?
-		}
-		catch (Exception e) {}
+		
+		
 		
 		return w;
 	}

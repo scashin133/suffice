@@ -43,7 +43,7 @@ public class Cell implements Serializable {
 
 	private Expression cellExpression;
 
-	private VarMap varmap;
+	private transient VarMap varmap;
 
 	private String cellLocation;
 
@@ -172,9 +172,16 @@ public class Cell implements Serializable {
 		} else {
 			previouslyRecompiledCells.push(this);
 			try {
-				varmap.setValue(cellThatINeedToUpdate.cellLocation,
-						cellThatINeedToUpdate
-								.getValueRecursively(new Stack<Cell>()));
+				String[] namesOfCellsIReferTo = cellExpression
+						.getVariableNames();
+				for (String nameOfCellIReferTo : namesOfCellsIReferTo) {
+					Cell cellIReferTo = sheet.getCells()
+							.get(nameOfCellIReferTo);
+					varmap.setValue(nameOfCellIReferTo, cellIReferTo
+							.getValueRecursively(new Stack<Cell>()));
+
+				}
+
 				calculatedValue = cellExpression.eval(varmap, new FuncMap());
 
 				Double thisValue = (Double) calculatedValue;
