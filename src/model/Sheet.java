@@ -6,6 +6,11 @@ import javax.swing.table.AbstractTableModel;
 public class Sheet extends AbstractTableModel {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5631729999997415879L;
+
+	/**
 	 * We can change how these are intialized. Probably should be a value that
 	 * is passed to the table model when constructed.
 	 */
