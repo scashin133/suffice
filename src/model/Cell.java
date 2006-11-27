@@ -41,7 +41,7 @@ public class Cell implements Serializable {
 
 	private ArrayList<Cell> cellsIHaveRegisteredListenersWith;
 
-	private Expression cellExpression;
+	private transient Expression cellExpression;
 
 	private transient VarMap varmap;
 
