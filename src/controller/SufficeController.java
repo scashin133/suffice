@@ -28,6 +28,8 @@ public class SufficeController {
 
         	ObjectOutputStream oos = new ObjectOutputStream (o);
     		oos.writeObject(w);
+    		oos.close();
+    		o.close();
         }
         catch (Exception e) {}
 
@@ -38,13 +40,18 @@ public class SufficeController {
 	
 	
 	//Retrieving the saved info, then casting it as a workbook. 
-	public static void load(InputStream input) {
+	public static WorkBook load(InputStream input) {
+		WorkBook w = null;
 		try {
 			ObjectInputStream ois = new ObjectInputStream (input);
-			WorkBook w = (WorkBook) ois.readObject();
+			w = (WorkBook) ois.readObject();
+			ois.close();
+			input.close();
 			// will readObject() create a new JTable, cause Suffice
 			// to start up as normal, etc?
 		}
 		catch (Exception e) {}
+		
+		return w;
 	}
 }
