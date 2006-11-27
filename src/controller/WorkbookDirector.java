@@ -29,12 +29,6 @@ public class WorkbookDirector {
 		wbb.buildPart();
 		wb = wbb.getResult();
 		
-		sb.buildPart();
-		wb.addSheet (sb.getResult());
-		
-		//epb.buildPart();
-		//wb.setParser (epb.getResult());
-		
 		return wb;
 	}
 }
