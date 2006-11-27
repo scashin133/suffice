@@ -51,7 +51,7 @@ public class Cell implements Serializable {
 		this.sheet = sheet;
 		this.row = row;
 		this.column = col;
-		this.cellLocation = sheet.getColumnName(col) + row;
+		this.cellLocation = sheet.getModelCellLocation(row, col);
 		this.calculatedValue = value;
 		this.cellsIReferTo = new HashMap<String, Cell>();
 		this.cellsListeningToMe = new ArrayList<Cell>();
@@ -189,6 +189,8 @@ public class Cell implements Serializable {
 				calculatedValue = "ERR: Circularity!";
 			} catch (NumberFormatException nfe) {
 				calculatedValue = "ERR: non-number references";
+			} catch (RuntimeException re) {
+				calculatedValue = re.getMessage();
 			}
 
 			for (Cell c : this.cellsListeningToMe) {
@@ -244,7 +246,7 @@ public class Cell implements Serializable {
 				if (DEBUG) {
 					System.out.println("\tERROR: bad cell name");
 				}
-				return "ERR";
+				return "ERR: bad cell name";
 			}
 
 			// successfuly found cell by name
@@ -271,6 +273,8 @@ public class Cell implements Serializable {
 
 			} catch (NumberFormatException e) {
 				return "ERR: non-number references";
+			} catch (NullPointerException npe) {
+				return "ERR: " + npe.getMessage();
 			}
 		} catch (CircularityException e) {
 
@@ -309,7 +313,11 @@ public class Cell implements Serializable {
 						.getVariableNames();
 
 				for (String cellName : cellNamesInExpression) {
-					double value = cellsIReferTo.get(cellName)
+					Cell cellIReferTo = cellsIReferTo.get(cellName);
+					if (cellIReferTo == null) {
+						throw new NullPointerException("ERR: bad cell name");
+					}
+					double value = cellIReferTo
 							.getValueRecursively(visitedCells);
 					varmap.setValue(cellName, value);
 				}

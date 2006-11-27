@@ -37,14 +37,16 @@ public class Sheet extends AbstractTableModel {
 		this.name = name;
 		cells = new TreeMap<String, Cell>();
 	}
-	
-	public TreeMap<String, Cell> getCells(){
+
+	public TreeMap<String, Cell> getCells() {
 		return cells;
 	}
 
 	/**
 	 * Changes the Sheets name.
-	 * @param name - Name to change the sheet to.
+	 * 
+	 * @param name -
+	 *            Name to change the sheet to.
 	 */
 	public void rename(String name) {
 		this.name = name;
@@ -96,7 +98,7 @@ public class Sheet extends AbstractTableModel {
 	 */
 	public Object getValueAt(int rowIndex, int columnIndex) {
 
-		String cellLocation = getColumnName(columnIndex) + rowIndex;
+		String cellLocation = getModelCellLocation(rowIndex, columnIndex);
 		Cell tempCell = cells.get(cellLocation);
 		if (tempCell == null) {
 			cells.put(cellLocation, new Cell(this, rowIndex, columnIndex, ""));
@@ -117,12 +119,12 @@ public class Sheet extends AbstractTableModel {
 	 * @return
 	 */
 	public Cell getCellAt(int rowIndex, int columnIndex) {
-		String cellLocation = getColumnName(columnIndex) + rowIndex;
+		String cellLocation = getModelCellLocation(rowIndex, columnIndex);
 
 		Cell tempCell = cells.get(cellLocation);
 		System.out.println(tempCell);
 		if (tempCell == null) {
-			//System.out.println("putting cell at " + cellLocation);
+			// System.out.println("putting cell at " + cellLocation);
 			cells.put(cellLocation, new Cell(this, rowIndex, columnIndex, ""));
 			return cells.get(cellLocation);
 		} else {
@@ -136,7 +138,7 @@ public class Sheet extends AbstractTableModel {
 	 * could be used elsewhere.
 	 */
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		String cellLocation = getColumnName(columnIndex) + rowIndex;
+		String cellLocation = getModelCellLocation(rowIndex, columnIndex);
 		Cell temp = cells.get(cellLocation);
 		if (temp == null) {
 			cells.put(cellLocation, new Cell(this, rowIndex, columnIndex,
@@ -152,6 +154,12 @@ public class Sheet extends AbstractTableModel {
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return true;
 
+	}
+
+	public String getModelCellLocation(int row, int col) {
+		String modelCellLocation = getColumnName(col) + ++row;
+
+		return modelCellLocation;
 	}
 
 }
