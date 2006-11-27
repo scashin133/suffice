@@ -14,7 +14,7 @@ public class Sheet extends AbstractTableModel {
 	 * We can change how these are intialized. Probably should be a value that
 	 * is passed to the table model when constructed.
 	 */
-	private final static int ROW_COUNT = 5;
+	private final static int ROW_COUNT = 25;
 
 	private final static int COLUMN_COUNT = 5;
 
