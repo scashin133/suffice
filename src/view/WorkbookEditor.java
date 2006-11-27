@@ -5,17 +5,25 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+
+import controller.SufficeController;
 import model.Sheet;
+import model.WorkBook;
 
 public class WorkbookEditor extends JFrame {
 	
 	private JMenuBar menubar;
 	private JMenu menu;
+	private JMenuItem newwb;
 	private JMenuItem openfile;
 	private JMenuItem saveas;
 	private JMenuItem save;
@@ -28,7 +36,11 @@ public class WorkbookEditor extends JFrame {
 	private JMenuItem removerow;
 	private JMenuItem removecolumn;
 	private JTabbedPane tabpane;
+	private JFileChooser fileOpener;
+	private JFileChooser fileSaver;
+	private WorkBook workbook;
 	private File currentFile;
+	private boolean fileActive;
 		
 	public WorkbookEditor() {
 		
@@ -39,6 +51,11 @@ public class WorkbookEditor extends JFrame {
 	    catch (Exception e) {
 	       // handle exception
 	    }
+	    
+	    workbook = SufficeController.newWorkbook();
+	    
+	    fileOpener = new JFileChooser();
+	    fileSaver = new JFileChooser();
 	    
 		menubar = new JMenuBar();
 		formMenu(); 
@@ -57,6 +74,8 @@ public class WorkbookEditor extends JFrame {
 		this.pack();
 		this.setTitle("Suffice");
 		this.setResizable(true);
+		
+		fileActive = false;
 	}
 	
 	private void formMenu() {
@@ -64,6 +83,8 @@ public class WorkbookEditor extends JFrame {
 		menu.getAccessibleContext().setAccessibleDescription("Perform file operations");
 		menubar.add(menu);
 		
+		newwb = new JMenuItem("New Workbook");
+		newwb.addActionListener(new NewWorkbookListener());
 		openfile = new JMenuItem("Open File...");
 		openfile.addActionListener(new OpenFileListener());
 		saveas = new JMenuItem("Save As...");
@@ -72,6 +93,8 @@ public class WorkbookEditor extends JFrame {
 		save.addActionListener(new SaveFileListener());
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(new ExitListener());
+		menu.add(newwb);
+		menu.addSeparator();
 		menu.add(openfile);
 		menu.addSeparator();
 		menu.add(save);
@@ -94,39 +117,34 @@ public class WorkbookEditor extends JFrame {
 		menu.add(renamesheet);
 		menu.add(removesheet);
 		
-		menu = new JMenu("Spreadsheet");
-		menu.getAccessibleContext().setAccessibleDescription("Actions specific to this spreadsheet");
-		menubar.add(menu);
-		
-		newrow = new JMenuItem("Add new row");
-		newrow.addActionListener(new AddNewRowListener());
-		newcolumn = new JMenuItem("Add new column");
-		newcolumn.addActionListener(new AddNewColumnListener());
-		removerow = new JMenuItem("Remove current row");
-		removerow.addActionListener(new RemoveRowListener());
-		removecolumn = new JMenuItem("Remove current column");
-		removecolumn.addActionListener(new RemoveColumnListener());
-		menu.add(newrow);
-		menu.add(newcolumn);
-		menu.addSeparator();
-		menu.add(removerow);
-		menu.add(removecolumn);
 	}
 	
 	private JPanel makeSheetPanel(String title) {
-		Sheet testSheet = new Sheet("Sheet1");
-		SufficeTable testTable = new SufficeTable(testSheet);
-		TableColumnModel testColumnModel = testTable.getColumnModel();
+		Sheet sheet = new Sheet(title);
+		workbook.addSheet(sheet);
+		return makeSheetPanel(sheet);
+	}
+	
+	private JPanel makeSheetPanel(Sheet sheet) {
+
+		SufficeTable table = makeTable(sheet);
+		JPanel tablePanel = new JPanel();
+		tablePanel.add(new JScrollPane(table));
+		return tablePanel;
+	}
+	
+	private SufficeTable makeTable(Sheet sheet) {
+		SufficeTable table = new SufficeTable(sheet);
+		TableColumnModel testColumnModel = table.getColumnModel();
 		Enumeration<TableColumn> columns = testColumnModel.getColumns();
 		while (columns.hasMoreElements()) {
 			TableColumn column = columns.nextElement();
 
-			column.setHeaderValue(testSheet.getColumnName(column.getModelIndex()));
+			column.setHeaderValue(sheet.getColumnName(column.getModelIndex()));
 		}
+		
+		return table;
 
-		JPanel tablePanel = new JPanel();
-		tablePanel.add(new JScrollPane(testTable));
-		return tablePanel;
 	}
 	
 	private void addNewSheet() {
@@ -153,36 +171,55 @@ public class WorkbookEditor extends JFrame {
 		}
 	}
 	
-	private void openFile() {
-		
+	private void openFile() throws FileNotFoundException {
+		int rval = fileOpener.showOpenDialog(this);
+		if(rval == JFileChooser.APPROVE_OPTION) {
+			currentFile = fileOpener.getSelectedFile();
+			fileActive = true;
+			workbook = SufficeController.load(new FileInputStream(currentFile));
+			
+			tabpane.removeAll();
+			
+			ArrayList<Sheet> sheets = workbook.getSheets();
+			System.out.println(sheets.size());
+			for(Sheet s : sheets) {
+				tabpane.addTab("Sheet " + (tabpane.getTabCount() + 1), makeSheetPanel(s));
+			}
+		}
+
 	}
 	
-	private void saveFile() {
-		
+	private void saveFile() throws FileNotFoundException {
+		if(fileActive) {
+			SufficeController.save(workbook, new FileOutputStream(currentFile));
+		}
+		else {
+			saveFileAs();
+		}
 	}
 	
-	private void saveFileAs(String filename) {
+	private void saveFileAs() throws FileNotFoundException {
+		int rval = fileSaver.showSaveDialog(this);
+		if(rval == JFileChooser.APPROVE_OPTION) {
+			currentFile = fileSaver.getSelectedFile();
+			fileActive = true;
+			SufficeController.save(workbook, new FileOutputStream(currentFile));
+		}
 		
 	}
 	
 	private void exit() {
-		this.dispose();
+		if(!(fileActive)) {
+			
+		}
+		else 
+		{
+			this.dispose();
+		}
 	}
-	
-	private void removeRow() {
-		
-	}
-	
-	private void removeColumn() {
-		
-	}
-	
-	private void addNewRow() {
-		
-	}
-	
-	private void addNewColumn() {
-		
+
+	private void newWorkbook() {
+		new WorkbookEditor();
 	}
 	
 	private class AddNewSheetListener implements ActionListener {
@@ -205,19 +242,32 @@ public class WorkbookEditor extends JFrame {
 
 	private class OpenFileListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			openFile();
+			try {
+				openFile();
+			}
+			catch(Exception e) {}
 		}
 	}
 	
 	private class SaveFileListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			
+			try {
+				saveFile();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	private class SaveFileAsListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			
+			try {
+				saveFileAs();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -227,27 +277,9 @@ public class WorkbookEditor extends JFrame {
 		}
 	}
 	
-	private class AddNewRowListener implements ActionListener {
+	private class NewWorkbookListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			addNewRow();
-		}
-	}
-	
-	private class AddNewColumnListener implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			addNewColumn();
-		}
-	}
-	
-	private class RemoveRowListener implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			removeRow();
-		}
-	}
-	
-	private class RemoveColumnListener implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			removeColumn();
+			newWorkbook();
 		}
 	}
 }
