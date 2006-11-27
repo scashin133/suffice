@@ -1,7 +1,7 @@
 package controller;
 
 import controller.SufficeController;
-
+import view.WorkbookEditor;
 //This class is for initialization of the application.
 //It creates a new workbook (using the builder), and starts everything up.
 
