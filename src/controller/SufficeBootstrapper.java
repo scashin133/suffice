@@ -10,8 +10,6 @@ public class SufficeBootstrapper {
 	public static void main(String[] args) {
 		
 		WorkbookEditor we = new WorkbookEditor ();
-		// Are we still using WorkbookEditor, or is it under
-		// a different name (SufficeTable)?
 	}
 
 }
