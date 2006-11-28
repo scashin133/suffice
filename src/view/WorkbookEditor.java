@@ -127,13 +127,12 @@ public class WorkbookEditor extends JFrame {
 	
 	private JPanel makeSheetPanel(Sheet sheet) {
 
-		SufficeTable table = makeTable(sheet);
 		JPanel tablePanel = new JPanel();
-		tablePanel.add(new JScrollPane(table));
+		tablePanel.add(makeScrollPane(sheet));
 		return tablePanel;
 	}
 	
-	private SufficeTable makeTable(Sheet sheet) {
+	private JScrollPane makeScrollPane(Sheet sheet) {
 		SufficeTable table = new SufficeTable(sheet);
 		TableColumnModel testColumnModel = table.getColumnModel();
 		Enumeration<TableColumn> columns = testColumnModel.getColumns();
@@ -142,8 +141,16 @@ public class WorkbookEditor extends JFrame {
 
 			column.setHeaderValue(sheet.getColumnName(column.getModelIndex()));
 		}
+		RowHeaderListModel lm = new RowHeaderListModel(sheet);
+		JList rowHeader = new JList(lm);    
+		rowHeader.setFixedCellWidth(50);
 		
-		return table;
+		rowHeader.setFixedCellHeight(table.getRowHeight()
+					   + table.getRowMargin() - table.getIntercellSpacing().height);
+		rowHeader.setCellRenderer(new RowHeaderRenderer(table));
+		JScrollPane jsp = new JScrollPane(table);
+		jsp.setRowHeaderView(rowHeader);
+		return jsp;
 
 	}
 	
@@ -179,7 +186,7 @@ public class WorkbookEditor extends JFrame {
 			workbook = SufficeController.load(new FileInputStream(currentFile));
 			
 			tabpane.removeAll();
-			
+						
 			ArrayList<Sheet> sheets = workbook.getSheets();
 			System.out.println(sheets.size());
 			for(Sheet s : sheets) {
