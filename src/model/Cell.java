@@ -108,7 +108,8 @@ public class Cell implements Serializable {
 		}
 
 		// nothing entered into cell,
-		// set calculated value to raw expression and return
+		// set calculated value to raw expression
+		// and parse the (blank) expression
 		if (rawExpression.length() == 0) {
 			calculatedValue = rawExpression;
 			cellExpression = ExpressionTree.parse(rawExpression);
@@ -128,11 +129,10 @@ public class Cell implements Serializable {
 				calculatedValue = compileRawExpression(rawExpressionWithoutEquals);
 
 			} else {
-
 				// the data entered into this cell isn't an expression
 
 				calculatedValue = rawExpression;
-				// cellExpression = ExpressionTree.parse(rawExpression);
+				cellExpression = ExpressionTree.parse(rawExpression);
 			}
 		}
 
