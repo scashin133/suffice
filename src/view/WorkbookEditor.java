@@ -31,10 +31,6 @@ public class WorkbookEditor extends JFrame {
 	private JMenuItem newsheet;
 	private JMenuItem removesheet;
 	private JMenuItem renamesheet;
-	private JMenuItem newrow;
-	private JMenuItem newcolumn;
-	private JMenuItem removerow;
-	private JMenuItem removecolumn;
 	private JTabbedPane tabpane;
 	private JFileChooser fileOpener;
 	private JFileChooser fileSaver;
@@ -178,6 +174,29 @@ public class WorkbookEditor extends JFrame {
 		}
 	}
 	
+	private void open() throws FileNotFoundException {
+		JOptionPane pane = new JOptionPane("Do you want to save before opening a different file?",
+			    JOptionPane.QUESTION_MESSAGE,
+			    JOptionPane.YES_NO_CANCEL_OPTION);
+		JDialog dialog = pane.createDialog(this, "Save before opening?");
+		dialog.show();
+		Object selectedValue = pane.getValue();
+		if(selectedValue.equals(JOptionPane.YES_OPTION)) {
+			try {
+				saveFile();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			openFile();
+		}
+		else if(selectedValue.equals(JOptionPane.NO_OPTION)) {
+			openFile();
+		}
+		else {
+			
+		}	
+	}
+	
 	private void openFile() throws FileNotFoundException {
 		int rval = fileOpener.showOpenDialog(this);
 		if(rval == JFileChooser.APPROVE_OPTION) {
@@ -215,14 +234,27 @@ public class WorkbookEditor extends JFrame {
 		
 	}
 	
-	private void exit() {
-		if(!(fileActive)) {
-			
-		}
-		else 
-		{
-			this.dispose();
-		}
+	private void exitThisWindow() {
+			JOptionPane pane = new JOptionPane("Do you want to save before exiting?",
+				    JOptionPane.QUESTION_MESSAGE,
+				    JOptionPane.YES_NO_CANCEL_OPTION);
+			JDialog dialog = pane.createDialog(this, "Save before exit?");
+			dialog.show();
+			Object selectedValue = pane.getValue();
+			if(selectedValue.equals(JOptionPane.YES_OPTION)) {
+				try {
+					saveFile();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				this.dispose();
+			}
+			else if(selectedValue.equals(JOptionPane.NO_OPTION)) {
+				this.dispose();
+			}
+			else {
+				
+			}
 	}
 
 	private void newWorkbook() {
@@ -250,7 +282,7 @@ public class WorkbookEditor extends JFrame {
 	private class OpenFileListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
-				openFile();
+				open();
 			}
 			catch(Exception e) {}
 		}
@@ -261,7 +293,6 @@ public class WorkbookEditor extends JFrame {
 			try {
 				saveFile();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -272,7 +303,6 @@ public class WorkbookEditor extends JFrame {
 			try {
 				saveFileAs();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -280,7 +310,8 @@ public class WorkbookEditor extends JFrame {
 	
 	private class ExitListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			exit();
+			System.out.println("Exit listener caught");
+			exitThisWindow();
 		}
 	}
 	
