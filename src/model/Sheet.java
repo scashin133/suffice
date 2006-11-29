@@ -18,7 +18,7 @@ public class Sheet extends AbstractTableModel {
 
 	private final static int COLUMN_COUNT = 5;
 
-	public String name;
+	private String name;
 
 	/**
 	 * Where all of our cells are stored. The String is the cell location in
@@ -26,6 +26,8 @@ public class Sheet extends AbstractTableModel {
 	 * 20 and column 5 == F21
 	 */
 	private TreeMap<String, Cell> cells;
+
+	private final boolean DEBUG = false;
 
 	/**
 	 * Initializes the name of the Sheet and its underlying structure.
@@ -122,7 +124,9 @@ public class Sheet extends AbstractTableModel {
 		String cellLocation = getModelCellLocation(rowIndex, columnIndex);
 
 		Cell tempCell = cells.get(cellLocation);
-		System.out.println(tempCell);
+		if (DEBUG) {
+			System.out.println(tempCell);
+		}
 		if (tempCell == null) {
 			// System.out.println("putting cell at " + cellLocation);
 			cells.put(cellLocation, new Cell(this, rowIndex, columnIndex, ""));
@@ -160,6 +164,14 @@ public class Sheet extends AbstractTableModel {
 		String modelCellLocation = getColumnName(col) + ++row;
 
 		return modelCellLocation;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

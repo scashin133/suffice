@@ -26,7 +26,7 @@ public class WorkBook implements Serializable {
 
 			// this is the sheet we want to remove,
 			// so do it and return true
-			if (s.name == name) {
+			if (s.getName() == name) {
 				sheets.remove(s);
 				return true;
 			}
@@ -49,7 +49,7 @@ public class WorkBook implements Serializable {
 			Sheet s = sheets.get(i);
 
 			// this is the sheet who's zOrder we wish to change
-			if (s.name == name) {
+			if (s.getName() == name) {
 
 				if (!(i == zOrder)) {
 					// remove this sheet and insert it at the desired zOrder
@@ -74,7 +74,7 @@ public class WorkBook implements Serializable {
 	public String toString() {
 		String string = "";
 		for (Sheet s : sheets) {
-			string += s.name;
+			string += s.getName();
 		}
 		return string;
 

@@ -138,7 +138,9 @@ public class Cell implements Serializable {
 
 		// recompile every cell listening to me
 		for (Cell c : this.cellsListeningToMe) {
-			System.out.println("recompiling " + c);
+			if (DEBUG) {
+				System.out.println("recompiling " + c);
+			}
 			try {
 				if (c != this) {
 
@@ -163,10 +165,12 @@ public class Cell implements Serializable {
 	 */
 	private void recompile(Cell cellThatINeedToUpdate,
 			Stack<Cell> previouslyRecompiledCells) {
-		System.out.println("\tThis cell's raw expression: "
-				+ this.rawExpression);
-		System.out.println("\tCompiled expression before recompile: "
-				+ this.calculatedValue);
+		if (DEBUG) {
+			System.out.println("\tThis cell's raw expression: "
+					+ this.rawExpression);
+			System.out.println("\tCompiled expression before recompile: "
+					+ this.calculatedValue);
+		}
 		if (previouslyRecompiledCells.search(this) != -1) {
 			return;
 		} else {
@@ -206,8 +210,10 @@ public class Cell implements Serializable {
 					previouslyRecompiledCells.pop();
 				}
 			}
-			System.out.println("\tCompiled expression after recompile: "
-					+ this.calculatedValue);
+			if (DEBUG) {
+				System.out.println("\tCompiled expression after recompile: "
+						+ this.calculatedValue);
+			}
 		}
 	}
 
