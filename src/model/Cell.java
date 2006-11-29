@@ -56,6 +56,7 @@ public class Cell implements Serializable {
 		this.cellsIReferTo = new HashMap<String, Cell>();
 		this.cellsListeningToMe = new ArrayList<Cell>();
 		this.cellsIHaveRegisteredListenersWith = new ArrayList<Cell>();
+		this.cellExpression = ExpressionTree.parse("0");
 	}
 
 	/**
@@ -132,7 +133,14 @@ public class Cell implements Serializable {
 				// the data entered into this cell isn't an expression
 
 				calculatedValue = rawExpression;
-				cellExpression = ExpressionTree.parse(rawExpression);
+				try {
+					Double.parseDouble(String.valueOf(calculatedValue));
+					cellExpression = ExpressionTree.parse(String
+							.valueOf(calculatedValue));
+				} catch (NumberFormatException nfe) {
+					cellExpression = ExpressionTree.parse("0");
+				}
+
 			}
 		}
 
