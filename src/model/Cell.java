@@ -115,12 +115,13 @@ public class Cell implements Serializable {
 		// set calculated value to raw expression
 		// and parse the (blank) expression
 		if (rawExpression.length() == 0) {
-			calculatedValue = 0;
-			cellExpression = ExpressionTree.parse("");
+			calculatedValue = rawExpression;
+			cellExpression = ExpressionTree.parse("0");
 		} else if(rawExpression.equals("=")){
 			// why would you enter in just '='? Oh well, we
 			// handle that anyway ;-)
-			calculatedValue = 0;
+			calculatedValue = rawExpression;
+			cellExpression = ExpressionTree.parse("0");
 
 		} else {
 
