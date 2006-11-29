@@ -53,6 +53,13 @@ public class WorkbookEditor extends JFrame {
 	    fileOpener = new JFileChooser();
 	    fileSaver = new JFileChooser();
 	    
+	    ExampleFileFilter filter = new ExampleFileFilter();
+	    filter.addExtension("sfwb");
+	    filter.setDescription("Suffice Workbook File");
+	    
+	    fileOpener.setFileFilter(filter);
+	    fileSaver.setFileFilter(filter);
+	    
 		menubar = new JMenuBar();
 		formMenu(); 
 		this.setJMenuBar(menubar);
@@ -229,6 +236,7 @@ public class WorkbookEditor extends JFrame {
 		int rval = fileSaver.showSaveDialog(this);
 		if(rval == JFileChooser.APPROVE_OPTION) {
 			currentFile = fileSaver.getSelectedFile();
+			currentFile = new File(currentFile.getPath() + ".sfwb");
 			fileActive = true;
 			SufficeController.save(workbook, new FileOutputStream(currentFile));
 		}
