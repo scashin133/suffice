@@ -15,6 +15,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import controller.SufficeBootstrapper;
 import controller.SufficeController;
 import model.Sheet;
 import model.WorkBook;
@@ -61,9 +62,10 @@ public class WorkbookEditor extends JFrame {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			
-			// alternate look and feel. this one is much more usable than the OSX look and feel
-			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+
+			// alternate look and feel. this one is much more usable than the
+			// OSX look and feel
+			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 		} catch (Exception e) {
 			// handle exception
 		}
@@ -92,7 +94,7 @@ public class WorkbookEditor extends JFrame {
 
 		tabpane.addTab("Sheet 1", makeSheetPanel("1"));
 
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		this.add(tabpane);
 
@@ -371,7 +373,18 @@ public class WorkbookEditor extends JFrame {
 	}
 
 	private void newWorkbook() {
-		new WorkbookEditor();
+		class ThreadStarter implements Runnable {
+
+			public void run() {
+				SufficeBootstrapper.main(null);
+
+			}
+
+		}
+		;
+
+		new Thread(new ThreadStarter()).run();
+
 	}
 
 	private class AddNewSheetListener implements ActionListener {
