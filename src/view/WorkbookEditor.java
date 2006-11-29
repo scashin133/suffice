@@ -130,6 +130,7 @@ public class WorkbookEditor extends JFrame {
 	
 	private JScrollPane makeScrollPane(Sheet sheet) {
 		SufficeTable table = new SufficeTable(sheet);
+		table.getTableHeader().setReorderingAllowed(false);
 		TableColumnModel testColumnModel = table.getColumnModel();
 		Enumeration<TableColumn> columns = testColumnModel.getColumns();
 		while (columns.hasMoreElements()) {
