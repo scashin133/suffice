@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,15 +9,26 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import javax.swing.*;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import controller.SufficeBootstrapper;
-import controller.SufficeController;
 import model.Sheet;
 import model.WorkBook;
+import controller.SufficeBootstrapper;
+import controller.SufficeController;
 
 public class WorkbookEditor extends JFrame {
 

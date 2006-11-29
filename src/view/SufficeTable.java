@@ -2,7 +2,6 @@ package view;
 
 import java.util.Vector;
 
-import javax.swing.CellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;

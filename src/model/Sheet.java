@@ -1,8 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.TreeMap;
+
 import javax.swing.table.AbstractTableModel;
 
 public class Sheet extends AbstractTableModel {
@@ -170,10 +169,6 @@ public class Sheet extends AbstractTableModel {
 
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void initializeSheet() {

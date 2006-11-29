@@ -24,11 +24,10 @@ package view;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import javax.swing.table.TableModel;
-import javax.swing.JTextField;
-import javax.swing.JOptionPane;
+
 import javax.swing.DefaultCellEditor;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import model.Cell;
 import model.Sheet;

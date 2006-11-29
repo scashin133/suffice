@@ -42,35 +42,6 @@ public class WorkBook implements Serializable {
 		return sheets;
 	}
 
-	public boolean setSheetOrder(String name, int zOrder) {
-
-		for (int i = 0; i < sheets.size(); i++) {
-
-			Sheet s = sheets.get(i);
-
-			// this is the sheet who's zOrder we wish to change
-			if (s.getName() == name) {
-
-				if (!(i == zOrder)) {
-					// remove this sheet and insert it at the desired zOrder
-					sheets.remove(s);
-					sheets.add(zOrder, s);
-				} else {
-					// target sheet is already at the desired
-					// zOrder, do nothing
-				}
-
-				return true;
-
-			}
-
-		}
-
-		// never found the target sheet
-		return false;
-
-	}
-
 	public String toString() {
 		String string = "";
 		for (Sheet s : sheets) {
