@@ -1,20 +1,16 @@
 package model;
 
 import java.io.Serializable;
-import java.util.regex.Pattern;
-import com.eteks.parser.CompilationException;
-import com.eteks.parser.CompiledExpression;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.Stack;
+
 import com.graphbuilder.math.Expression;
 import com.graphbuilder.math.ExpressionParseException;
 import com.graphbuilder.math.ExpressionTree;
 import com.graphbuilder.math.FuncMap;
 import com.graphbuilder.math.VarMap;
-
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.Stack;
-import java.util.TreeMap;
 
 public class Cell implements Serializable {
 
@@ -46,6 +42,8 @@ public class Cell implements Serializable {
 	private transient VarMap varmap;
 
 	private String cellLocation;
+	
+	private FuncMap functionMap;
 
 	public Cell(Sheet sheet, int row, int col, Object value) {
 		this.sheet = sheet;
@@ -57,6 +55,8 @@ public class Cell implements Serializable {
 		this.cellsListeningToMe = new ArrayList<Cell>();
 		this.cellsIHaveRegisteredListenersWith = new ArrayList<Cell>();
 		this.cellExpression = ExpressionTree.parse("0");
+		functionMap = new FuncMap();
+		functionMap.loadDefaultFunctions();
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class Cell implements Serializable {
 
 				}
 
-				calculatedValue = cellExpression.eval(varmap, new FuncMap());
+				calculatedValue = cellExpression.eval(varmap, functionMap);
 
 				Double thisValue = (Double) calculatedValue;
 				Integer thisIntValue = thisValue.intValue();
@@ -296,7 +296,11 @@ public class Cell implements Serializable {
 				return "ERR: non-number references";
 			} catch (NullPointerException npe) {
 				return "ERR: " + npe.getMessage();
+			} catch (RuntimeException e){
+				calculatedValue = "ERR: undefined function";
+				return "ERR: undefined function";
 			}
+			
 		} catch (CircularityException e) {
 
 			return "ERR: Circularity!";
@@ -345,7 +349,7 @@ public class Cell implements Serializable {
 
 				// now that the varmap is populated, use it to evaluate the
 				// expression
-				return cellExpression.eval(varmap, new FuncMap());
+				return cellExpression.eval(varmap, functionMap);
 			} else {
 				// System.out.println(calculatedValue.getClass());
 				return Double.parseDouble((String) this.calculatedValue);
