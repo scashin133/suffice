@@ -174,7 +174,7 @@ public class WorkbookEditor extends JFrame {
 	private void removeSheet() {
 		int selectedIndex = tabpane.getSelectedIndex();
 		Sheet currentSheet = (Sheet) tables.get(selectedIndex).getModel();
-		workbook.removeSheet(currentSheet.name);
+		workbook.removeSheet(currentSheet.getName());
 		tables.remove(selectedIndex);
 		tabpane.remove(tabpane.getSelectedIndex());
 		String sheetTitleRegExp = "Sheet [0-9]*";
@@ -232,6 +232,7 @@ public class WorkbookEditor extends JFrame {
 			for(Sheet s : sheets) {
 				tabpane.addTab("Sheet " + (tabpane.getTabCount() + 1), makeSheetPanel(s));
 			}
+			this.setTitle("Suffice: " + currentFile.getPath());
 		}
 
 	}
@@ -263,6 +264,7 @@ public class WorkbookEditor extends JFrame {
 				}
 				fileActive = true;
 				SufficeController.save(workbook, new FileOutputStream(currentFile));
+				this.setTitle("Suffice: " + currentFile.getPath());
 			}
 		}
 		else {
