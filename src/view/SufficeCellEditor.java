@@ -33,7 +33,6 @@ import javax.swing.DefaultCellEditor;
 import model.Cell;
 import model.Sheet;
 
-import com.eteks.parser.CompilationException;
 
 /**
  * Allows for a cell to show its raw expression when it is being edited and its
