@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.TreeMap;
 import javax.swing.table.AbstractTableModel;
 
@@ -172,6 +174,15 @@ public class Sheet extends AbstractTableModel {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void initializeSheet() {
+		Object[] listOfCellValues = cells.values().toArray();
+		for (Object cObject : listOfCellValues) {
+			Cell c = (Cell) cObject;
+			c.initializeCell();
+			System.out.println(c);
+		}
 	}
 
 }

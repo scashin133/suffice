@@ -381,4 +381,13 @@ public class Cell implements Serializable {
 		return returnMe;
 	}
 
+	public void initializeCell() {
+		if (rawExpression == null) {
+			this.rawExpression = "";
+			this.cellExpression = ExpressionTree.parse("0");
+		} else {
+			setRawExpression(rawExpression);
+		}
+	}
+
 }

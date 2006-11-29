@@ -250,6 +250,7 @@ public class WorkbookEditor extends JFrame {
 			for (Sheet s : sheets) {
 				tabpane.addTab("Sheet " + (tabpane.getTabCount() + 1),
 						makeSheetPanel(s));
+				s.initializeSheet();
 			}
 			this.setTitle("Suffice: " + currentFile.getPath());
 		}
