@@ -60,7 +60,10 @@ public class WorkbookEditor extends JFrame {
 	public WorkbookEditor() {
 
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+			// alternate look and feel. this one is much more usable than the OSX look and feel
+			//UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 		} catch (Exception e) {
 			// handle exception
 		}
