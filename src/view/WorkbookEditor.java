@@ -236,7 +236,10 @@ public class WorkbookEditor extends JFrame {
 		int rval = fileSaver.showSaveDialog(this);
 		if(rval == JFileChooser.APPROVE_OPTION) {
 			currentFile = fileSaver.getSelectedFile();
-			currentFile = new File(currentFile.getPath() + ".sfwb");
+			String fileName = currentFile.getPath();
+			if(!(fileName.endsWith(".sfwb"))) {
+				currentFile = new File(fileName + ".sfwb");
+			}
 			fileActive = true;
 			SufficeController.save(workbook, new FileOutputStream(currentFile));
 		}
