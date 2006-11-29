@@ -2,13 +2,9 @@ package controller;
 
 import model.WorkBook;
 
-public class ConcreteWorkbookFactory implements IWorkbookFactory {
-	
-	public ConcreteWorkbookFactory () {
-		
-	}
+public class ConcreteWorkbookFactory{
 
-	public WorkBook createWorkbook () {
+	public static WorkBook createWorkbook() {
 		return new WorkBook();
 	}
 }

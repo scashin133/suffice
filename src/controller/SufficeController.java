@@ -8,7 +8,7 @@ public class SufficeController {
 	
 	// Return a new WorkBook
 	public static WorkBook newWorkbook() {
-		return WorkbookDirector.construct();
+		return ConcreteWorkbookFactory.createWorkbook();
 	}
 	
 	// Save the WorkBook using serialization
