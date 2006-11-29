@@ -37,6 +37,8 @@ public class WorkbookEditor extends JFrame {
 	private WorkBook workbook;
 	private File currentFile;
 	private boolean fileActive;
+	private ArrayList<SufficeTable> tables;
+	private int totalSheetCount;
 		
 	public WorkbookEditor() {
 		
@@ -49,6 +51,10 @@ public class WorkbookEditor extends JFrame {
 	    }
 	    
 	    workbook = SufficeController.newWorkbook();
+	    
+	    totalSheetCount = 0;
+	    
+	    tables = new ArrayList<SufficeTable>();
 	    
 	    fileOpener = new JFileChooser();
 	    fileSaver = new JFileChooser();
@@ -123,7 +129,8 @@ public class WorkbookEditor extends JFrame {
 	}
 	
 	private JPanel makeSheetPanel(String title) {
-		Sheet sheet = new Sheet(title);
+		Sheet sheet = new Sheet("Sheet " + (totalSheetCount + 1));
+		totalSheetCount++;
 		workbook.addSheet(sheet);
 		return makeSheetPanel(sheet);
 	}
@@ -154,6 +161,8 @@ public class WorkbookEditor extends JFrame {
 		rowHeader.setCellRenderer(new RowHeaderRenderer(table));
 		JScrollPane jsp = new JScrollPane(table);
 		jsp.setRowHeaderView(rowHeader);
+		
+		tables.add(table);
 		return jsp;
 
 	}
@@ -163,8 +172,11 @@ public class WorkbookEditor extends JFrame {
 	}
 	
 	private void removeSheet() {
+		int selectedIndex = tabpane.getSelectedIndex();
+		Sheet currentSheet = (Sheet) tables.get(selectedIndex).getModel();
+		workbook.removeSheet(currentSheet.name);
+		tables.remove(selectedIndex);
 		tabpane.remove(tabpane.getSelectedIndex());
-		
 		String sheetTitleRegExp = "Sheet [0-9]*";
 		for(int x = 0; x < tabpane.getTabCount(); x++) {
 			String tabTitle = tabpane.getTitleAt(x);
@@ -180,6 +192,7 @@ public class WorkbookEditor extends JFrame {
 		if(!(newName == null)) {
 			tabpane.setTitleAt(index, newName); 
 		}
+		int selectedIndex = tabpane.getSelectedIndex();
 	}
 	
 	private void open() throws FileNotFoundException {
@@ -211,8 +224,8 @@ public class WorkbookEditor extends JFrame {
 			currentFile = fileOpener.getSelectedFile();
 			fileActive = true;
 			workbook = SufficeController.load(new FileInputStream(currentFile));
-			
 			tabpane.removeAll();
+			tables = new ArrayList<SufficeTable>();
 						
 			ArrayList<Sheet> sheets = workbook.getSheets();
 			System.out.println(sheets.size());
@@ -224,26 +237,41 @@ public class WorkbookEditor extends JFrame {
 	}
 	
 	private void saveFile() throws FileNotFoundException {
-		if(fileActive) {
-			SufficeController.save(workbook, new FileOutputStream(currentFile));
+		SufficeTable st = this.getCurrentTable();
+		if(!(st.isEditing())) {
+			if(fileActive) {
+				SufficeController.save(workbook, new FileOutputStream(currentFile));
+			}
+			else {
+				saveFileAs();
+			}
 		}
 		else {
-			saveFileAs();
+			JOptionPane.showMessageDialog(this, "You are currently editing the open spreadsheet, and you cannot save the workbook until you are finished editing.");			
 		}
 	}
 	
 	private void saveFileAs() throws FileNotFoundException {
-		int rval = fileSaver.showSaveDialog(this);
-		if(rval == JFileChooser.APPROVE_OPTION) {
-			currentFile = fileSaver.getSelectedFile();
-			String fileName = currentFile.getPath();
-			if(!(fileName.endsWith(".sfwb"))) {
-				currentFile = new File(fileName + ".sfwb");
+		SufficeTable st = this.getCurrentTable();
+		if(!(st.isEditing())) {
+			int rval = fileSaver.showSaveDialog(this);
+			if(rval == JFileChooser.APPROVE_OPTION) {
+				currentFile = fileSaver.getSelectedFile();
+				String fileName = currentFile.getPath();
+				if(!(fileName.endsWith(".sfwb"))) {
+					currentFile = new File(fileName + ".sfwb");
+				}
+				fileActive = true;
+				SufficeController.save(workbook, new FileOutputStream(currentFile));
 			}
-			fileActive = true;
-			SufficeController.save(workbook, new FileOutputStream(currentFile));
 		}
-		
+		else {
+			JOptionPane.showMessageDialog(this, "You are currently editing the open spreadsheet, and you cannot save the workbook until you are finished editing.");			
+		}
+	}
+	
+	private SufficeTable getCurrentTable() {
+		return tables.get(tabpane.getSelectedIndex());
 	}
 	
 	private void exitThisWindow() {
