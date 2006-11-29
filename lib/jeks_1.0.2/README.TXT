@@ -1,1 +1,0 @@
-Please read with your browser the file index.html at jeks root for more information on Jeks (FAQ, history,...).
