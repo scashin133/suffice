@@ -42,8 +42,8 @@ public class Cell implements Serializable {
 	private transient VarMap varmap;
 
 	private String cellLocation;
-	
-	private FuncMap functionMap;
+
+	private transient FuncMap functionMap;
 
 	public Cell(Sheet sheet, int row, int col, Object value) {
 		this.sheet = sheet;
@@ -101,6 +101,9 @@ public class Cell implements Serializable {
 		this.rawExpression = rawExpression;
 
 		varmap = new VarMap();
+
+		functionMap = new FuncMap();
+		functionMap.loadDefaultFunctions();
 
 		// I (might) have a new list of cells I am listening to.
 		// let the old list know I am no longer listening to them
@@ -296,11 +299,11 @@ public class Cell implements Serializable {
 				return "ERR: non-number references";
 			} catch (NullPointerException npe) {
 				return "ERR: " + npe.getMessage();
-			} catch (RuntimeException e){
+			} catch (RuntimeException e) {
 				calculatedValue = "ERR: undefined function";
 				return "ERR: undefined function";
 			}
-			
+
 		} catch (CircularityException e) {
 
 			return "ERR: Circularity!";
